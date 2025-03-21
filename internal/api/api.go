@@ -4,13 +4,13 @@ import "errors"
 
 type Trips [][2]string
 
-func TripsToIternary(trips Trips) ([]string, error) {
+func TripsToItinerary(trips Trips) ([]string, error) {
 	var recursion func(Trips, []string) ([]string, error)
 	maxRecursionDepth := len(trips)
 	count := 0
 	recursion = func(trips Trips, sortedTrips []string) ([]string, error) {
 		if count >= maxRecursionDepth {
-			return nil, errors.New("impossible iternary")
+			return nil, errors.New("impossible itinerary")
 		}
 		count += 1
 		unsortedTrips := make(Trips, 0)
@@ -32,7 +32,7 @@ func TripsToIternary(trips Trips) ([]string, error) {
 		return recursion(unsortedTrips, sortedTrips)
 	}
 	if len(trips) < 1 {
-		return nil, errors.New("the array containting the trips can't be empty")
+		return nil, errors.New("the array containing the trips can't be empty")
 	}
 	return recursion(trips[1:], []string{trips[0][0], trips[0][1]})
 }

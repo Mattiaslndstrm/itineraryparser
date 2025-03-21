@@ -1,4 +1,4 @@
-module github.com/mattiaslndstrm/iternaryparser
+module github.com/mattiaslndstrm/itineraryparser
 
 go 1.17
 

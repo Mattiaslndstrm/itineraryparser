@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/mattiaslndstrm/iternaryparser/internal/api"
+	"github.com/mattiaslndstrm/itineraryparser/internal/api"
 )
 
 type EchoServer struct {
@@ -39,7 +39,7 @@ func tripsHandler() echo.HandlerFunc {
 		if trips, err = validatePayload(payload); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
-		if iternary, err = api.TripsToIternary(trips); err != nil {
+		if iternary, err = api.TripsToItinerary(trips); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 		return c.JSON(http.StatusOK, iternary)
