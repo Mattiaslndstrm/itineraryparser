@@ -8,6 +8,7 @@ import (
 	"github.com/mattiaslndstrm/itineraryparser/internal/api"
 )
 
+// Echo specific webserver
 type EchoServer struct {
 	e    *echo.Echo
 	port string
@@ -27,6 +28,9 @@ func (e EchoServer) Start() error {
 	return e.e.Start(e.port)
 }
 
+// takes the payload, tries to convert it to [][]string, tries to convert it to Trips ([][2]string),
+// and convert it to an itinerary ([]string), returns 200 and the result as json if successful,
+// else 400 and the error as json
 func tripsHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var payload [][]string
@@ -36,7 +40,7 @@ func tripsHandler() echo.HandlerFunc {
 		if err = c.Bind(&payload); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
-		if trips, err = validatePayload(payload); err != nil {
+		if trips, err = payloadToTrips(payload); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 		if iternary, err = api.TripsToItinerary(trips); err != nil {
@@ -46,7 +50,8 @@ func tripsHandler() echo.HandlerFunc {
 	}
 }
 
-func validatePayload(payload [][]string) (api.Trips, error) {
+// Converts the payload to Trips ([][2]string), returns an error if any of slices is not of length 2
+func payloadToTrips(payload [][]string) (api.Trips, error) {
 	var trips api.Trips
 	for _, item := range payload {
 		if len(item) != 2 {
